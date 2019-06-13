@@ -61,15 +61,20 @@ function rewrite(source) {
             element.attribs["@" + defaultEvent] = "x => " + name + ".set ? " + name + ".set(x) : (" + name + ".value = x)";
             delete element.attribs[vUseAttribute];
             // if this is component
-            if (element.tagName == "component") {
+            if (element.tagName == "template") {
                 // if has as binding
                 if (element.attribs["as"]) {
                     element.attribs[":is"] = "'" + element.attribs["as"] + "'";
                     delete element.attribs.as;
                 }
+                else if (element.attribs[":as"]) {
+                    element.attribs[":is"] = element.attribs[":as"];
+                    delete element.attribs[":as"];
+                }
                 else {
                     element.attribs[":is"] = name + "['$name'] || " + name + ".constructor.name";
                 }
+                element.tagName = "component";
             }
             // continue
             return null;

@@ -17,9 +17,9 @@ function rewrite(source: string): string {
 
 	// get the template tag
 
-	let template : any = source.match(/<template.*v-use.*<\/template>/s);
+	let template: any = source.match(/<template.*v-use.*<\/template>/s);
 
-	if (template && template.length){
+	if (template && template.length) {
 		template = template[0] as string;
 	} else {
 		return source;
@@ -65,14 +65,18 @@ function rewrite(source: string): string {
 			delete element.attribs[vUseAttribute];
 
 			// if this is component
-			if (element.tagName == "component") {
+			if (element.tagName == "template") {
 				// if has as binding
 				if (element.attribs["as"]) {
 					element.attribs[":is"] = "'" + element.attribs["as"] + "'";
 					delete element.attribs.as;
+				} else if (element.attribs[":as"]) {
+					element.attribs[":is"] =  element.attribs[":as"];
+					delete element.attribs[":as"];
 				} else {
 					element.attribs[":is"] = `${name}['$name'] || ${name}.constructor.name`
 				}
+				element.tagName = "component";
 			}
 
 			// continue
@@ -82,7 +86,7 @@ function rewrite(source: string): string {
 	// then go through every tag and modify this according to the definition
 	modifyAllTags();
 
-	if (!modified){
+	if (!modified) {
 		return source;
 	}
 

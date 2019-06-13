@@ -13,8 +13,8 @@ Transforms vue template from alias form:
 <template>
   <div>
     <textbox v-use="name" /> 
-    <component v-use="name" />
-    <component v-use="name" as="other" />
+    <template v-use="name" />
+    <template v-use="name" as="other" />
     <!-- will be translated to -->
     <textbox v-bind="name" @input="x => name.set ? name.set(x) : (name.value = x)" />
     <component v-bind="name" @input="x => name.set ? name.set(x) : (name.value = x)" :is="name.$use || name.constructor.name" />
