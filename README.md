@@ -1,5 +1,5 @@
 # vue-cli-plugin-alias
-Custom vue directive v-use
+Custom vue directive v-use to bind whole objects to components
 
 Installation:
 vue add vue-cli-plugin-directive-use
@@ -8,15 +8,17 @@ Or through vue ui, search for vue-cli-plugin-directive-use
 
 Sample (also see test.ts)
 
-Transforms vue template from alias form:
+Transforms vue template:
 ```html
 <template>
   <div>
     <textbox v-use="name" /> 
+    <textbox v-use.change="name" /> 
     <template v-use="name" />
     <template v-use="name" as="other" />
     <!-- will be translated to -->
     <textbox v-bind="name" @input="x => name.set ? name.set(x) : (name.value = x)" />
+    <textbox v-bind="name" @change="x => name.set ? name.set(x) : (name.value = x)" />
     <component v-bind="name" @input="x => name.set ? name.set(x) : (name.value = x)" :is="name.$use || name.constructor.name" />
     <component v-bind="name" @input="x => name.set ? name.set(x) : (name.value = x)" is="other" />
   </div>
