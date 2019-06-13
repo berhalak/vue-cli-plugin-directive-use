@@ -24,8 +24,14 @@ function traverse(element, visitor) {
     return null;
 }
 function rewrite(source) {
+    // get the template tag
+    var template = source.match(/<template>.*<\/template>/s);
+    if (template && template.length) {
+        template = template[0];
+    }
     // load vue template, wrap it in body, for use in html method at the end (html renders inner content)
-    var $ = cheerio.load("<body>" + source + "</body>", { recognizeSelfClosing: true, xmlMode: true, decodeEntities: false });
+    var $ = cheerio.load("<body>" + template + "</body>", { recognizeSelfClosing: true, xmlMode: true, decodeEntities: false });
+    var modified = false;
     function modifyAllTags() {
         // get the template node
         var template = $("template")[0];
@@ -41,6 +47,7 @@ function rewrite(source) {
             // if attribute has default event modifier
             if (!vUseAttribute)
                 return null;
+            modified = true;
             var defaultEvent = "input";
             if (vUseAttribute.includes(".")) {
                 defaultEvent = vUseAttribute.replace("v-use.", "");
@@ -67,8 +74,13 @@ function rewrite(source) {
     }
     // then go through every tag and modify this according to the definition
     modifyAllTags();
+    if (!modified) {
+        return source;
+    }
     // now serialize body content to html
-    return $("body").html() || source;
+    var result = $("body").html();
+    result = source.replace(template, result);
+    return result;
 }
 exports.rewrite = rewrite;
 //# sourceMappingURL=vue-main.js.map

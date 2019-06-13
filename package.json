@@ -9,7 +9,7 @@
   "devDependencies": {
     "@types/cheerio": "^0.22.11",
     "ts-node": "^8.1.0",
-    "typescript": "^3.5.2"
+    "typescript": "^3.5.1"
   },
   "scripts": {
     "build": "tsc",
