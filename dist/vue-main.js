@@ -25,7 +25,7 @@ function traverse(element, visitor) {
 }
 function rewrite(source) {
     // get the template tag
-    var template = source.match(/<template.*<\/template>/s);
+    var template = source.match(/<template.*v-use.*<\/template>/s);
     if (template && template.length) {
         template = template[0];
     }

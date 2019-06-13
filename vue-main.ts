@@ -17,7 +17,7 @@ function rewrite(source: string): string {
 
 	// get the template tag
 
-	let template : any = source.match(/<template.*<\/template>/s);
+	let template : any = source.match(/<template.*v-use.*<\/template>/s);
 
 	if (template && template.length){
 		template = template[0] as string;
