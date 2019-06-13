@@ -17,10 +17,12 @@ function rewrite(source: string): string {
 
 	// get the template tag
 
-	let template : any = source.match(/<template>.*<\/template>/s);
+	let template : any = source.match(/<template.*<\/template>/s);
 
 	if (template && template.length){
 		template = template[0] as string;
+	} else {
+		return source;
 	}
 
 	// load vue template, wrap it in body, for use in html method at the end (html renders inner content)

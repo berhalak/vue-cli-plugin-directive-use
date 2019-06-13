@@ -25,9 +25,12 @@ function traverse(element, visitor) {
 }
 function rewrite(source) {
     // get the template tag
-    var template = source.match(/<template>.*<\/template>/s);
+    var template = source.match(/<template.*<\/template>/s);
     if (template && template.length) {
         template = template[0];
+    }
+    else {
+        return source;
     }
     // load vue template, wrap it in body, for use in html method at the end (html renders inner content)
     var $ = cheerio.load("<body>" + template + "</body>", { recognizeSelfClosing: true, xmlMode: true, decodeEntities: false });
