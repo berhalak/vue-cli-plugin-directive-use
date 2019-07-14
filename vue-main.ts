@@ -45,8 +45,12 @@ function rewrite(source: string): string {
 			if (element.tagName.startsWith('var:')) {
 				modified = true;
 				const name = element.tagName.split(':')[1];
-				element.attribs[":is"] = `${name}.type && (typeof(${name}.type) == 'function') ? ${name}.type() : (${name}.type ? ${name}.type : ${name}.constructor.name)`;
-				element.attribs[":value"] = name;
+				if (!element.attribs["is"] && !element.attribs[":is"]) {
+					element.attribs[":is"] = `${name}.type && (typeof(${name}.type) == 'function') ? ${name}.type() : (${name}.type ? ${name}.type : ${name}.constructor.name)`;
+				}
+				if (!element.attribs["value"] && !element.attribs[":value"]) {
+					element.attribs[":value"] = name;
+				}
 				element.tagName = "component";
 				return null;
 			}
