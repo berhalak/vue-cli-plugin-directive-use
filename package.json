@@ -1,6 +1,6 @@
 {
   "name": "vue-cli-plugin-directive-use",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Custom directive for binding whole objects to components",
   "main": "index.js",
   "dependencies": {
