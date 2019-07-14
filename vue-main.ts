@@ -42,6 +42,15 @@ function rewrite(source: string): string {
 				return null;
 			}
 
+			if (element.tagName.startsWith('var:')) {
+				modified = true;
+				const name = element.tagName.split(':')[1];
+				element.attribs[":is"] = `${name}.type && (typeof(${name}.type) == 'function') ? ${name}.type() : (${name}.type ? ${name}.type : ${name}.constructor.name)`;
+				element.attribs[":value"] = name;
+				element.tagName = "component";
+				return null;
+			}
+
 			// get v-use attribute
 			const attributeNames = Object.keys(element.attribs);
 			const vUseAttribute = attributeNames.find(x => x.startsWith("v-use"));
@@ -71,7 +80,7 @@ function rewrite(source: string): string {
 					element.attribs[":is"] = "'" + element.attribs["as"] + "'";
 					delete element.attribs.as;
 				} else if (element.attribs[":as"]) {
-					element.attribs[":is"] =  element.attribs[":as"];
+					element.attribs[":is"] = element.attribs[":as"];
 					delete element.attribs[":as"];
 				} else {
 					element.attribs[":is"] = `${name}['$name'] || ${name}.constructor.name`

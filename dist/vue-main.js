@@ -44,6 +44,14 @@ function rewrite(source) {
             if (!element || !element.tagName || element.type != "tag") {
                 return null;
             }
+            if (element.tagName.startsWith('var:')) {
+                modified = true;
+                var name_1 = element.tagName.split(':')[1];
+                element.attribs[":is"] = name_1 + ".type && (typeof(" + name_1 + ".type) == 'function') ? " + name_1 + ".type() : (" + name_1 + ".type ? " + name_1 + ".type : " + name_1 + ".constructor.name)";
+                element.attribs[":value"] = name_1;
+                element.tagName = "component";
+                return null;
+            }
             // get v-use attribute
             var attributeNames = Object.keys(element.attribs);
             var vUseAttribute = attributeNames.find(function (x) { return x.startsWith("v-use"); });
